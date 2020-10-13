@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\title{UPA část 1 - 03: Kurzy devizového trhu (dr. Burgetová)}
+\author{Pavol Debnár (xdebna01), Matěj Mlejnek (xmlejn04), Jakub Zárybnický (xzaryb00)}
+\date{13. 10. 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Zvolené dotazy a formulace vlastního dotazu}
+\subsection{Dotaz skupiny A}
+Vytvořte žebříček měn, které v daném období nejvíce posílily/oslabily.
+
+Pro zjištění vývoje za konkrétní období, potřebujeme pouze data z prvního a posledního dne a kurz měn, normalizovaný s ohledem na množství.
+
+\subsection{Dotaz skupiny B}
+Najděte skupiny měn s podobným chováním (skupiny měn, které obvykle současně posilují/oslabují).
+
+Nejprve potřebujeme získat korelační matici, pro kterou potřebujeme mít data v časových sérií normalizovaného kurzu podle měn tak, ať jsme schopni zjistit korelaci každé jedné kombinace měn. Na základě korelační matice zjistíme skupiny měn, které mají všechny vzájemnou korelaci např. větší než 0,3 a menší než -0,3.
+
+\subsection{Vlastní dotaz}
+Sledujte vzájemný vývoj měn v rámci zeměpisných skupin svých zemí:
+
+\begin{itemize}
+    \item Amerika - Kanada, USA, Mexiko
+    \item Evropa - Bulharsko, Dánsko, EMU, Polsko, Rumunsko, Maďarsko, Chorvatsko, Velká Británie, Norsko, Švédsko, Švýcarsko, Island
+    \item Asie - Čína, Turecko, Izrael, Hongkong, Indie, Japonsko, Rusko, Singapur, Thajsko, Korejská republika
+    \item Oceánie a Afrika - Austrálie, Nový Zéland, Filipíny, Indonesie, Malajsie, Jižní Afrika
+\end{itemize}
+
+Pro tuto úlohu jsme se rozhodli vynechat Mezinárodní měnový fond (MMF).
+
+Pro tento dotaz potřebujeme stejný vstup jako pro dotaz skupiny B, tj. potřebujeme časové série normalizovaného kurzu jednotlivých měn.
+
+Alternativní vlastní dotaz, pokud tento je příliš nejednoznačný: Zjistěte a zakreslete vliv dne v týdnu na souhrnnou volatilitu měn.
+
+\section{Stručná charakteristika zvolené datové sady}
+Série souborů získaná z webu ČNB pomoci knihovny \texttt{requests}, každý obsahující data pro jeden den. Data jsou ve formátu CSV (oddělovač "|"), obsahují sloupce země, měna, množství, kód a kurz.
+
+\section{Zvolený způsob uložení uložení surových dat}
+Jako NoSQL databázi jsme vybrali MongoDB, kde budou data uložena ve schématu:
+\begin{verbatim}
+{
+    měna: {
+        země (string),
+        název (string),
+        kód (string)
+    },
+    den (date),
+    kurz (float),
+    množství (integer)
+}
+\end{verbatim}
+
+Jako relační databázi budeme používat PostgreSql, kde data převedeme do normalizované reprezentace. Použijeme dvě tabulky:
+\begin{itemize}
+    \item měna (země CHAR, název CHAR, kód CHAR UNIQUE)
+    \item kurz (den DAY, měna CHAR FOREIGN KEY, normalizovaný kurz FLOAT)
+\end{itemize}
+
+\end{document}
