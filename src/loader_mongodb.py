@@ -3,8 +3,10 @@ from pymongo import MongoClient, errors
 import db_connects
 from scrape import parse
 
+DEBUG = False
+
 def load_data_into_mongodb(client, scrape_dir):
-    print ("server version:", client.server_info()["version"])
+    # print ("server version:", client.server_info()["version"])
     database_names = client.list_database_names()
 
     # print ("databases:", database_names)

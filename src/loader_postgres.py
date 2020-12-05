@@ -6,13 +6,13 @@ from bson.json_util import dumps
 import json
 from datetime import datetime
 
+DEBUG = False
+
 def load_data_into_postgres(conn_postgres, client_mongodb):
 	print("loading into postgres...")
 	conn_postgres.set_isolation_level(extensions.ISOLATION_LEVEL_AUTOCOMMIT);
 
 	psqlCursor = conn_postgres.cursor();
-
-	tableName = "news_stories_archive";
 
 	dropTableStmt = "DROP TABLE IF EXISTS kurz;"
 

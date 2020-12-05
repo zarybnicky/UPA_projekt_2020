@@ -6,6 +6,7 @@ import time
 from dateutil.relativedelta import relativedelta
 import requests
 
+DEBUG = False
 
 def scrape(base_url, output_dir, start_date, end_date):
     for ordinal in range(start_date.toordinal(), end_date.toordinal()):
@@ -68,5 +69,7 @@ if __name__ == '__main__':
         output_dir=scrape_dir,
     )
 
+    
     for data in parse(scrape_dir):
-        print(data)
+        if DEBUG:
+            print(data)
