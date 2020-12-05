@@ -4,9 +4,6 @@ import db_connects
 from scrape import parse
 
 def load_data_into_mongodb(client, scrape_dir):
-    DB_CURRENCIES = "currencies"
-    DB_COL_CURRENCIES = "col_currencies"
-
     print ("server version:", client.server_info()["version"])
     database_names = client.list_database_names()
 
@@ -18,9 +15,9 @@ def load_data_into_mongodb(client, scrape_dir):
         # print(data)
 
 
-    cur_db = client[DB_CURRENCIES]
+    cur_db = client[db_connects.MONGO_DB_CURRENCIES]
 
-    cur_col = cur_db[DB_COL_CURRENCIES]
+    cur_col = cur_db[db_connects.MONGO_DB_COL_CURRENCIES]
 
     # print(cur_col.count())
 

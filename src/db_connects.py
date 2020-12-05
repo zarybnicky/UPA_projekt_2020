@@ -2,6 +2,9 @@ import os
 import psycopg2
 from pymongo import MongoClient, errors
 
+MONGO_DB_CURRENCIES = "currencies"
+MONGO_DB_COL_CURRENCIES = "col_currencies"
+
 def connect_to_postgres():
 	host="localhost"
 	database="postgres"
