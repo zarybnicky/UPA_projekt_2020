@@ -7,7 +7,7 @@ def load_data_into_mongodb(client, scrape_dir):
     print ("server version:", client.server_info()["version"])
     database_names = client.list_database_names()
 
-    print ("databases:", database_names)
+    # print ("databases:", database_names)
     print("loading into mongodb...")
 
     jsonData = list(parse(scrape_dir))
@@ -29,7 +29,7 @@ def load_data_into_mongodb(client, scrape_dir):
 
     # print(x.inserted_ids)
 
-    print("Successfully loaded: " + str(cur_col.count()) + "/" + str(len(jsonData)))
+    print("Successfully loaded: " + str(cur_db.col_currencies.count_documents({})) + "/" + str(len(jsonData)))
 
 
 if __name__ == '__main__':

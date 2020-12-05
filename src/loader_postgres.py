@@ -50,13 +50,18 @@ def load_data_into_postgres(conn_postgres, client_mongodb):
 		psqlCursor.execute(insertRowStmt);
 		# print(mena_item)
 
-	cursor = cur_col.find()
-# 
+	# cursor = cur_col.find()
+	cursor = cur_col.find({},{ "_id": 0 })
+	 
 	entries = str(dumps(list(cursor)))
 
 	json_data = json.loads(entries)
 	
 	# print(json_data)	
+
+	total_count = len(json_data)
+
+	count = 0
 
 	for item in json_data:  
 		currency_code = item["currency"]["code"]
@@ -68,16 +73,17 @@ def load_data_into_postgres(conn_postgres, client_mongodb):
 		
 		date_time = datetime.fromtimestamp(int(date))
 	
-		# print(date)
 		date_out = date_time.strftime("%Y-%m-%d")
-		# print(date_out)
 		
 		insertRowStmt = "INSERT INTO kurz VALUES ('{}', '{}', '{}');".format(date_out,currency_code,normalized)
 		psqlCursor.execute(insertRowStmt);
+		count += 1
 		
 	psqlCursor.close();
 
 	conn_postgres.close();
+
+	print("Successfully loaded: " + str(count) + "/" + str(total_count))
 	
 if __name__ == '__main__':
 	conn = db_connects.connect_to_postgres()
