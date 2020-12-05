@@ -31,7 +31,7 @@ def scrape(base_url, output_dir, start_date, end_date):
 
 def parse(input_dir):
     for name in os.listdir(input_dir):
-        path = os.path.join(scrape_dir, name)
+        path = os.path.join(input_dir, name)
         if not os.path.isfile(path):
             continue
         yield from parse_file(path)
