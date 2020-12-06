@@ -37,4 +37,5 @@ def task_B():
 
 
 def task_C():
+	# SELECT date_part('dow', den::date) as dow, AVG(normalizovany_kurz) FROM kurz GROUP BY dow order by dow;
     pass
