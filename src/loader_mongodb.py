@@ -1,7 +1,7 @@
 import os
 
-from .db_connects import MONGO_DB_CURRENCIES, MONGO_DB_COL_CURRENCIES, connect_to_mongodb
-from .scrape import parse
+from db_connects import MONGO_DB_CURRENCIES, MONGO_DB_COL_CURRENCIES, connect_to_mongodb
+from scrape import parse
 
 DEBUG = False
 

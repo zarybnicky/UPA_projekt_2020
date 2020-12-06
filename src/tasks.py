@@ -1,10 +1,11 @@
-import db_connects
 import pandas as pd
+
+from db_connects import connect_to_postgres
 
 DEBUG = False
 
 def task_A():
-    conn_postgres = db_connects.connect_to_postgres()
+    conn_postgres = connect_to_postgres()
     if conn_postgres is None:
         print("Error while connecting to postgres")
         exit(1)
@@ -40,3 +41,14 @@ def task_A():
 
     cursor.close()
     conn_postgres.close()
+
+
+def task_B():
+    res_labels = ['AS']
+    res_values = [42]
+    df = pd.DataFrame({'cur': res_labels, 'val': res_values})
+    ax = df.plot.bar(x='cur', y='val', rot=0)
+
+
+def task_C():
+    pass

@@ -24,6 +24,7 @@
         matplotlib
         pymongo
         psycopg2
+        pandas
       ];
     in (jupyter.jupyterlabWith {
       extraPackages = p: [(p.python38.withPackages pythonPkgs)];

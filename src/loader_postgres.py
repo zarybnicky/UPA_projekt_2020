@@ -4,7 +4,7 @@ import json
 from bson.json_util import dumps
 from psycopg2 import extensions
 
-from .db_connects import (
+from db_connects import (
     MONGO_DB_CURRENCIES, MONGO_DB_COL_CURRENCIES,
     connect_to_postgres, connect_to_mongodb
 )
@@ -46,6 +46,7 @@ def load_data_into_postgres(conn_postgres, client_mongodb):
             mena_item["code"]
         ))
 
+    count = 0
     entries = str(dumps(list(cur_col.find({}, {"_id": 0}))))
     for item in json.loads(entries):
         date = str(item["date"]["$date"])[:-3]
@@ -54,9 +55,12 @@ def load_data_into_postgres(conn_postgres, client_mongodb):
             item["currency"]["code"],
             float(item["price"].replace(',', '.')) / int(item["lotSize"])
         ))
+        count += 1
 
     cursor.close()
     conn_postgres.close()
+
+    print("Successfully loaded: %s records" % count)
 
 
 def main():
