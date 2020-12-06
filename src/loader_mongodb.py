@@ -1,21 +1,20 @@
 import os
-import db_connects
-from scrape import parse
+
+from .db_connects import MONGO_DB_CURRENCIES, MONGO_DB_COL_CURRENCIES, connect_to_mongodb
+from .scrape import parse
 
 DEBUG = False
 
 
 def load_data_into_mongodb(client, scrape_dir):
-    print("server version:", client.server_info()["version"])
-    print("databases:", client.list_database_names())
-    print("loading into mongodb...")
+    print("Loading into mongodb...")
 
-    cur_db = client[db_connects.MONGO_DB_CURRENCIES]
-    cur_col = cur_db[db_connects.MONGO_DB_COL_CURRENCIES]
+    cur_db = client[MONGO_DB_CURRENCIES]
+    cur_col = cur_db[MONGO_DB_COL_CURRENCIES]
     cur_col.drop()
 
     res = cur_col.insert_many(parse(scrape_dir))
-    print("Successfully loaded: " + len(res.inserted_ids) + " records")
+    print("Successfully loaded: %s records" % len(res.inserted_ids))
 
 
 def main():
@@ -23,7 +22,7 @@ def main():
     if not os.path.isdir(scrape_dir):
         print("Scrapped folder is missing.")
     else:
-        client = db_connects.connect_to_mongodb()
+        client = connect_to_mongodb()
         if client is not None:
             load_data_into_mongodb(client, scrape_dir)
         else:

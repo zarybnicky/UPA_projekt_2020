@@ -1,3 +1,5 @@
+from os.path import dirname, realpath, join
+
 import psycopg2
 from pymongo import MongoClient, errors
 
@@ -8,73 +10,49 @@ MONGO_DB_COL_CURRENCIES = "col_currencies"
 
 
 def connect_to_postgres():
-    host = "localhost"
-    database = "postgres"
-    user = "postgres"
-    password = "mysecretpassword"
-    port = "5432"
+    config = {
+        "host": "localhost",
+        "database": "postgres",
+        "user": "postgres",
+        "password": "mysecretpassword",
+        "port": "5432",
+    }
 
-    lines = tuple(open("postgres_config.txt", 'r'))
-
-    for line in lines:
-        if line.startswith("host="):
-            host = line[len("host="):len(line)].strip()
-        if line.startswith("database="):
-            database = line[len("database="):len(line)].strip()
-        if line.startswith("user="):
-            user = line[len("user="):len(line)].strip()
-        if line.startswith("password="):
-            password = line[len("password="):len(line)].strip()
-        if line.startswith("port="):
-            port = line[len("port="):len(line)].strip()
+    lines = open(join(dirname(realpath(__file__)), "postgres_config.txt"), 'r')
+    config.update(dict(line.strip().split('=') for line in lines))
 
     if DEBUG:
-        print("POSTGRES - Connecting with")
-        print("Host: " + host)
-        print("Database: " + database)
-        print("User: " + user)
-        print("Password: " + password)
-        print("Port: " + port)
+        print("POSTGRES - Connecting to ", config)
 
     return psycopg2.connect(
-        host=host,
-        database=database,
-        user=user,
-        password=password,
-        port=port)
+        host=config['host'],
+        database=config['database'],
+        user=config['user'],
+        password=config['password'],
+        port=config['port']
+    )
 
 
 def connect_to_mongodb():
-    host = "localhost"
-    user = ""
-    password = ""
-    port = "27017"
+    config = {
+        "host": "localhost",
+        "user": "",
+        "password": "",
+        "port": "27017",
+    }
 
-    lines = tuple(open("mongodb_config.txt", 'r'))
-
-    for line in lines:
-        if line.startswith("host="):
-            host = line[len("host="):len(line)].strip()
-        if line.startswith("user="):
-            user = line[len("user="):len(line)].strip()
-        if line.startswith("password="):
-            password = line[len("password="):len(line)].strip()
-        if line.startswith("port="):
-            port = line[len("port="):len(line)].strip()
+    lines = open(join(dirname(realpath(__file__)), "mongodb_config.txt"), 'r')
+    config.update(dict(line.strip().split('=') for line in lines))
 
     if DEBUG:
-        print("MONGODB - Connecting with")
-        print("Host: " + host)
-        print("User: " + user)
-        print("Password: " + password)
-        print("Port: " + port)
+        print("MONGODB - Connecting to ", config)
 
     try:
         return MongoClient(
-            host=[host + ":" + port],
+            host=["%s:%s" % (config['host'], config['port'])],
             serverSelectionTimeoutMS=3000,
-            username=user,
-            password=password,
+            username=config['user'],
+            password=config['password'],
         )
     except errors.ServerSelectionTimeoutError as err:
         print("pymongo ERROR:", err)

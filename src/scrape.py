@@ -8,6 +8,7 @@ import requests
 
 DEBUG = False
 
+
 def scrape(base_url, output_dir, start_date, end_date):
     for ordinal in range(start_date.toordinal(), end_date.toordinal()):
         url = base_url + date.fromordinal(ordinal).strftime('%d.%m.%Y')
@@ -57,7 +58,7 @@ def parse_file(path):
                 }
 
 
-if __name__ == '__main__':
+def main():
     scrape_dir = 'scraped/'
     if not os.path.isdir(scrape_dir):
         os.mkdir(scrape_dir)
@@ -69,7 +70,10 @@ if __name__ == '__main__':
         output_dir=scrape_dir,
     )
 
-    
-    for data in parse(scrape_dir):
-        if DEBUG:
+    if DEBUG:
+        for data in parse(scrape_dir):
             print(data)
+
+
+if __name__ == '__main__':
+    main()

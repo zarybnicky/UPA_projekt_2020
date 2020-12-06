@@ -4,13 +4,16 @@ import json
 from bson.json_util import dumps
 from psycopg2 import extensions
 
-import db_connects
+from .db_connects import (
+    MONGO_DB_CURRENCIES, MONGO_DB_COL_CURRENCIES,
+    connect_to_postgres, connect_to_mongodb
+)
 
 DEBUG = False
 
 
 def load_data_into_postgres(conn_postgres, client_mongodb):
-    print("loading into postgres...")
+    print("Loading into postgres...")
     conn_postgres.set_isolation_level(extensions.ISOLATION_LEVEL_AUTOCOMMIT)
 
     cursor = conn_postgres.cursor()
@@ -26,8 +29,8 @@ def load_data_into_postgres(conn_postgres, client_mongodb):
         "normalizovany_kurz FLOAT)"
     )
 
-    cur_db = client_mongodb[db_connects.MONGO_DB_CURRENCIES]
-    cur_col = cur_db[db_connects.MONGO_DB_COL_CURRENCIES]
+    cur_db = client_mongodb[MONGO_DB_CURRENCIES]
+    cur_col = cur_db[MONGO_DB_COL_CURRENCIES]
 
     # each currency type
     mena_res = cur_col.find({}, {"currency": 1, "_id": 0}).distinct("currency")
@@ -44,7 +47,6 @@ def load_data_into_postgres(conn_postgres, client_mongodb):
         ))
 
     entries = str(dumps(list(cur_col.find({}, {"_id": 0}))))
-    print(entries)
     for item in json.loads(entries):
         date = str(item["date"]["$date"])[:-3]
         cursor.execute("INSERT INTO kurz VALUES ('{}', '{}', '{}')".format(
@@ -58,8 +60,8 @@ def load_data_into_postgres(conn_postgres, client_mongodb):
 
 
 def main():
-    conn = db_connects.connect_to_postgres()
-    client = db_connects.connect_to_mongodb()
+    conn = connect_to_postgres()
+    client = connect_to_mongodb()
 
     if client is None:
         print("Error while connecting to mongodb")

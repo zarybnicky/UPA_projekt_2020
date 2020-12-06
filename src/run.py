@@ -1,3 +1,7 @@
-exec(open("scrape.py").read())
-exec(open("loader_mongodb.py").read())
-exec(open("loader_postgres.py").read())
+from .scrape import main as scrape
+from .loader_mongodb import main as load_mongo
+from .loader_postgres import main as load_postgres
+
+scrape()
+load_mongo()
+load_postgres()
