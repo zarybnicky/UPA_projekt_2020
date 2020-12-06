@@ -23,10 +23,7 @@ def main():
         print("Scrapped folder is missing.")
     else:
         client = connect_to_mongodb()
-        if client is not None:
-            load_data_into_mongodb(client, scrape_dir)
-        else:
-            print("Error while connecting to mongodb")
+        load_data_into_mongodb(client, scrape_dir)
 
 
 if __name__ == '__main__':

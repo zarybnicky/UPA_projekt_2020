@@ -47,13 +47,9 @@ def connect_to_mongodb():
     if DEBUG:
         print("MONGODB - Connecting to ", config)
 
-    try:
-        return MongoClient(
-            host=["%s:%s" % (config['host'], config['port'])],
-            serverSelectionTimeoutMS=3000,
-            username=config['user'],
-            password=config['password'],
-        )
-    except errors.ServerSelectionTimeoutError as err:
-        print("pymongo ERROR:", err)
-        return None
+    return MongoClient(
+        host=["%s:%s" % (config['host'], config['port'])],
+        serverSelectionTimeoutMS=3000,
+        username=config['user'],
+        password=config['password'],
+    )
