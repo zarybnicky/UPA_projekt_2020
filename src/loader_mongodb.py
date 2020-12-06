@@ -1,40 +1,24 @@
 import os
-from pymongo import MongoClient, errors
 import db_connects
 from scrape import parse
 
 DEBUG = False
 
-def load_data_into_mongodb(client, scrape_dir):
-    # print ("server version:", client.server_info()["version"])
-    database_names = client.list_database_names()
 
-    # print ("databases:", database_names)
+def load_data_into_mongodb(client, scrape_dir):
+    print("server version:", client.server_info()["version"])
+    print("databases:", client.list_database_names())
     print("loading into mongodb...")
 
-    jsonData = list(parse(scrape_dir))
-    # for data in jsonData:
-        # print(data)
-
-
     cur_db = client[db_connects.MONGO_DB_CURRENCIES]
-
     cur_col = cur_db[db_connects.MONGO_DB_COL_CURRENCIES]
-
-    # print(cur_col.count())
-
     cur_col.drop()
 
-    # print(cur_col.count())
-    
-    x = cur_col.insert_many(jsonData)
-
-    # print(x.inserted_ids)
-
-    print("Successfully loaded: " + str(cur_db.col_currencies.count_documents({})) + "/" + str(len(jsonData)))
+    res = cur_col.insert_many(parse(scrape_dir))
+    print("Successfully loaded: " + len(res.inserted_ids) + " records")
 
 
-if __name__ == '__main__':
+def main():
     scrape_dir = 'scraped/'
     if not os.path.isdir(scrape_dir):
         print("Scrapped folder is missing.")
@@ -44,5 +28,7 @@ if __name__ == '__main__':
             load_data_into_mongodb(client, scrape_dir)
         else:
             print("Error while connecting to mongodb")
-        
-        
+
+
+if __name__ == '__main__':
+    main()

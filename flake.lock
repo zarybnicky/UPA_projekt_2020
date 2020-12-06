@@ -1,0 +1,42 @@
+{
+  "nodes": {
+    "jupyter-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1601621858,
+        "narHash": "sha256-VZIYTdKYHvOJ2EX8LtQ2yt1mukjWz6vw2nTTBXS+95c=",
+        "owner": "tweag",
+        "repo": "jupyterWith",
+        "rev": "35eb565c6d00f3c61ef5e74e7e41870cfa3926f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tweag",
+        "ref": "master",
+        "repo": "jupyterWith",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1606086654,
+        "narHash": "sha256-VFl+3eGIMqNp7cyOMJ6TjM/+UcsLKtodKoYexrlTJMI=",
+        "path": "/nix/store/assj1w3bnwxfl98bd04f873p2zh66zil-source",
+        "rev": "19db3e5ea2777daa874563b5986288151f502e27",
+        "type": "path"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "jupyter-src": "jupyter-src",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
