@@ -28,6 +28,8 @@ def load_data_into_postgres(conn, client):
 
     collection = client[MONGO_DB_CURRENCIES][MONGO_DB_COL_CURRENCIES]
 
+	print(collection.find({}, {"currency": 1, "_id": 0}).distinct("currency"))
+
     # each currency type
     for mena_item in collection.find({}, {"currency": 1, "_id": 0}).distinct("currency"):
         cursor.execute("INSERT INTO mena VALUES ('{}', '{}', '{}')".format(
