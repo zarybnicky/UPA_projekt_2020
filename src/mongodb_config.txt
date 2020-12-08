@@ -1,4 +1,4 @@
-host=localhost
+host=upa
 user=
 password=
 port=27017

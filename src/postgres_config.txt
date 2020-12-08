@@ -1,4 +1,4 @@
-host=localhost
+host=upa
 database=postgres
 user=postgres
 password=mysecretpassword
