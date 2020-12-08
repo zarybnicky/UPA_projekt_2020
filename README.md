@@ -1,5 +1,5 @@
 # UPA projekt 2020
-FIT VUT Brno
+FIT VUT Brno, in collaboration with [Mmat95](https://github.com/Mmat95).
 
 Main content is in [UPA_project.ipynb]().
 
